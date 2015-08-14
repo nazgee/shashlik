@@ -9,7 +9,7 @@ endif (QT5X11EXTRAS32_INCLUDE_DIRS AND QT5X11EXTRAS32_LIBRARIES)
 
 find_path(QT5X11EXTRAS32_INCLUDE_DIR NAMES QtX11ExtrasVersion
     PATHS
-    /usr/include/i386-linux-gnu/qt5/QtX11Extras
+    /usr/include/x86_64-linux-gnu/qt5/QtX11Extras
     ${CMAKE_INSTALL_PREFIX}/include
     ${KDE4_INCLUDE_DIR}
     /usr/include
@@ -18,13 +18,13 @@ find_path(QT5X11EXTRAS32_INCLUDE_DIR NAMES QtX11ExtrasVersion
     )
 find_path(QT5X11EXTRAS32_BASE_INCLUDE_DIR NAMES QtX11Extras/QtX11ExtrasVersion
     PATHS
-    /usr/include/i386-linux-gnu/qt5
+    /usr/include/x86_64-linux-gnu/qt5
     ${CMAKE_INSTALL_PREFIX}/include
     ${KDE4_INCLUDE_DIR}
     /usr/include
     /usr/include/qt5
     )
-find_library(QT5X11EXTRAS32_LIBRARIES NAMES Qt5X11Extras libQt5X11Extras libQt5X11Extras.so.5 PATHS /usr/lib /usr/lib/i386-linux-gnu/)
+find_library(QT5X11EXTRAS32_LIBRARIES NAMES Qt5X11Extras libQt5X11Extras libQt5X11Extras.so.5 PATHS /usr/lib /usr/lib/x86_64-linux-gnu/)
 SET(QT5X11EXTRAS32_INCLUDE_DIRS "${QT5X11EXTRAS32_INCLUDE_DIR};${QT5X11EXTRAS32_BASE_INCLUDE_DIR}")
 
 
