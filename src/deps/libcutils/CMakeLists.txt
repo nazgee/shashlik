@@ -8,7 +8,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 
 add_definitions(-D_GNU_SOURCE
                 -DHAVE_LINUX_LOCAL_SOCKET_NAMESPACE
-                -DANDROID_SMP=1
+                -DANDROID_SMP=0
                 -DHAVE_SYSTEM_PROPERTY_SERVER
 )
 set(REPO_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../android-core)
@@ -17,17 +17,17 @@ set(cutils_SRCS
     ${REPO_PATH}/libcutils/android_reboot.c
     #${REPO_PATH}/libcutils/ashmem-dev.c
     ${REPO_PATH}/libcutils/ashmem-host.c
-#     ${REPO_PATH}/libcutils/atomic.c # ARM only sources, apparently...
+    ${REPO_PATH}/libcutils/atomic.c # ARM only sources, apparently...
     ${REPO_PATH}/libcutils/config_utils.c
     ${REPO_PATH}/libcutils/cpu_info.c
     ${REPO_PATH}/libcutils/debugger.c
-    ${REPO_PATH}/libcutils/dir_hash.c
+    #${REPO_PATH}/libcutils/dir_hash.c
     #    ${REPO_PATH}/libcutils/dlmalloc_stubs.c
     ${REPO_PATH}/libcutils/fs.c
     ${REPO_PATH}/libcutils/hashmap.c
     ${REPO_PATH}/libcutils/iosched_policy.c
     ${REPO_PATH}/libcutils/klog.c
-    ${REPO_PATH}/libcutils/list.c
+    #${REPO_PATH}/libcutils/list.c
     ${REPO_PATH}/libcutils/load_file.c
     ${REPO_PATH}/libcutils/memory.c
     ${REPO_PATH}/libcutils/multiuser.c
@@ -35,11 +35,10 @@ set(cutils_SRCS
     ${REPO_PATH}/libcutils/open_memstream.c
     #    ${REPO_PATH}/libcutils/partition_utils.c
     ${REPO_PATH}/libcutils/process_name.c
-    ${REPO_PATH}/libcutils/properties.c
     ${REPO_PATH}/libcutils/qtaguid.c
     ${REPO_PATH}/libcutils/record_stream.c
     ${REPO_PATH}/libcutils/sched_policy.c
-    ${REPO_PATH}/libcutils/sha1.c
+    #${REPO_PATH}/libcutils/sha1.c
     ${REPO_PATH}/libcutils/socket_inaddr_any_server.c
     ${REPO_PATH}/libcutils/socket_local_client.c
     ${REPO_PATH}/libcutils/socket_local_server.c
@@ -51,8 +50,10 @@ set(cutils_SRCS
     ${REPO_PATH}/libcutils/strdup8to16.c
     ${REPO_PATH}/libcutils/str_parms.c
     ${REPO_PATH}/libcutils/threads.c
-    ${REPO_PATH}/libcutils/trace.c
-    ${REPO_PATH}/libcutils/uevent.c
+
+    #${REPO_PATH}/libcutils/properties.c
+    #${REPO_PATH}/libcutils/trace.c
+    #${REPO_PATH}/libcutils/uevent.c
 )
 
 set(cutils_HEADERS
@@ -63,7 +64,7 @@ set(cutils_HEADERS
     ${REPO_PATH}/include/cutils/atomic.h
     ${REPO_PATH}/include/cutils/atomic-inline.h
     ${REPO_PATH}/include/cutils/atomic-mips.h
-    ${REPO_PATH}/include/cutils/atomic-x86.h
+    ${REPO_PATH}/include/cutils/atomic-x86_64.h
     ${REPO_PATH}/include/cutils/bitops.h
     ${REPO_PATH}/include/cutils/compiler.h
     ${REPO_PATH}/include/cutils/config_utils.h
@@ -107,3 +108,6 @@ install(FILES
         ${cutils_HEADERS}
         DESTINATION include/cutils)
 #install(FILES ${REPO_PATH}/include/sys/system_properties.h DESTINATION include/sys)
+
+add_executable(cutils_test tests/cutils_test.cpp)
+target_link_libraries(cutils_test cutils)

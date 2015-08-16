@@ -19,6 +19,7 @@ include_directories(
 
 add_library(sqlite3_android STATIC ${sqlite_android_SRCS})
 target_link_libraries(sqlite3_android log)
+set_target_properties(sqlite3_android PROPERTIES COMPILE_FLAGS "-fPIC")
 
 add_library(sqlite3 SHARED ${sqlite_SRCS})
 target_compile_definitions(sqlite3

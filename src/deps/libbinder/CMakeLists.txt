@@ -69,22 +69,22 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib/
                  #${CMAKE_CURRENT_BINARY_DIR}/libdex/  # For linking dexdump, dexlist and dexgen
                  )
 
-add_library(binder SHARED ${binder_LIB_SRCS})
+add_library(${PROJECT_NAME} SHARED ${binder_LIB_SRCS})
 if(FORCE_32BIT_BUILD)
-    set_target_properties(binder PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} -m32" LINK_FLAGS "${LINK_FLAGS} -m32")
 endif(FORCE_32BIT_BUILD)
 
-target_compile_definitions(binder
-    PUBLIC
-#    -DBINDER_IPC_32BIT
-    -DHAVE_ANDROID_OS
-)
-target_link_libraries(binder
-                      log utils cutils
-                      )
+#target_compile_definitions(${PROJECT_NAME}
+#    PUBLIC
+#    -DHAVE_ANDROID_OS
+#)
+target_link_libraries(${PROJECT_NAME} utils)
 
-install(TARGETS binder DESTINATION ${ANDROID_LIB_DIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})
 install(FILES
         ${binder_LIB_HEADERS}
         DESTINATION include/binder)
+
+add_executable(binder_test tests/binder_test.cpp)
+target_link_libraries(binder_test binder)
 

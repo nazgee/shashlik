@@ -85,6 +85,7 @@ target_compile_definitions(skia_hack
     #Skia should not use dlopen on Android.
     -DSK_CAN_USE_DLOPEN=0
     )
+set_target_properties(skia_hack PROPERTIES COMPILE_FLAGS -fPIC)
 target_compile_definitions(skia_hack2
     PUBLIC
     -DANDROID_LARGE_MEMORY_DEVICE
@@ -99,6 +100,7 @@ target_compile_definitions(skia_hack2
     #Skia should not use dlopen on Android.
     -DSK_CAN_USE_DLOPEN=0
     )
+set_target_properties(skia_hack2 PROPERTIES COMPILE_FLAGS -fPIC)
 if(FORCE_32BIT_BUILD)
     set_target_properties(skia_hack PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
     set_target_properties(skia_hack2 PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
@@ -568,7 +570,7 @@ set(skia_gr_SRCS
 #     ${SKIA_SRC_PATH}/gpu/gl/unix/SkNativeGLContext_unix.cpp
     )
 
-add_library(skia SHARED ${skia_SRCS} ${skia_skgr_SRCS} ${skia_nulldbg_gpu_SRCS} ${skia_gr_SRCS} gif-hacks.cpp)
+add_library(skia SHARED ${skia_SRCS} ${skia_skgr_SRCS} ${skia_nulldbg_gpu_SRCS} ${skia_gr_SRCS})
 target_compile_definitions(skia
     PUBLIC
     -DANDROID_LARGE_MEMORY_DEVICE

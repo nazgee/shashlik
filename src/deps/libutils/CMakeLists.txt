@@ -14,8 +14,8 @@ add_definitions(-DHAVE_POSIX_FILEMAP
                 -DHAVE_PTHREADS
                 -DOS_PATH_SEPARATOR='/'
                 -DANDROID_SMP=1
-                -DHAVE_ANDROID_OS   # To make android threads work.  FIXME: Check what other consequences this has.
 )
+#-DHAVE_ANDROID_OS   # To make android threads work.  FIXME: Check what other consequences this has.
 
 set(utils_SRCS
    ${REPO_PATH}/libutils/BasicHashtable.cpp
@@ -25,9 +25,11 @@ set(utils_SRCS
    ${REPO_PATH}/libutils/JenkinsHash.cpp
    ${REPO_PATH}/libutils/LinearAllocator.cpp
    ${REPO_PATH}/libutils/LinearTransform.cpp
-   ${REPO_PATH}/libutils/Log.cpp
    ${REPO_PATH}/libutils/Looper.cpp
-   ${REPO_PATH}/libutils/misc.cpp
+   ${REPO_PATH}/libutils/Log.cpp
+   ${REPO_PATH}/libutils/NativeHandle.cpp
+   ${REPO_PATH}/libutils/Printer.cpp
+   ${REPO_PATH}/libutils/ProcessCallStack.cpp
    ${REPO_PATH}/libutils/PropertyMap.cpp
    ${REPO_PATH}/libutils/RefBase.cpp
    ${REPO_PATH}/libutils/SharedBuffer.cpp
@@ -42,6 +44,7 @@ set(utils_SRCS
    ${REPO_PATH}/libutils/Trace.cpp
    ${REPO_PATH}/libutils/Unicode.cpp
    ${REPO_PATH}/libutils/VectorImpl.cpp
+   ${REPO_PATH}/libutils/misc.cpp
 )
 
 set(utils_HEADERS
@@ -100,10 +103,13 @@ add_library(utils SHARED ${utils_SRCS})
 if(FORCE_32BIT_BUILD)
     set_target_properties(utils PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 endif(FORCE_32BIT_BUILD)
-target_link_libraries(utils pthread corkscrew)
+target_link_libraries(utils pthread cutils log backtrace)
 
 install(TARGETS utils DESTINATION ${ANDROID_LIB_DIR})
 install(FILES
         ${utils_HEADERS}
         DESTINATION include/utils)
+
+add_executable(utils_test tests/utils_test.cpp)
+target_link_libraries(utils_test utils)
 

@@ -33,7 +33,7 @@
 #include <syscall.h>
 
 #ifdef HAS_SPECIAL_INCLUDE_DIRS
-#include <i386-linux-gnu/sys/types.h>
+#include <sys/types.h>
 #else
 #include <../include/sys/types.h>
 #endif

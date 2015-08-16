@@ -199,6 +199,7 @@ set(libjni_HEADERS
 )
 
 add_library(jni SHARED ${libjni_SRCS})
+set_target_properties(jni PROPERTIES COMPILE_FLAGS "-fPIC")
 if(FORCE_32BIT_BUILD)
     set_target_properties(jni PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 endif(FORCE_32BIT_BUILD)

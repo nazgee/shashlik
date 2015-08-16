@@ -40,7 +40,18 @@ target_include_directories(installer
     ${QT5CORE32_INCLUDE_DIRS}
 )
 
+set_target_properties(installer PROPERTIES COMPILE_FLAGS "-fPIC")
+
+target_compile_definitions(installer
+    PUBLIC
+    -DSHASHLIK_ROOT="/home/darkenk/workspace/projects/shashlik/install"
+)
+
 add_executable(installd ${installd_SRCS})
+target_compile_definitions(installd
+    PUBLIC
+    -DSHASHLIK_ROOT="/home/darkenk/workspace/projects/shashlik/install"
+)
 if(FORCE_32BIT_BUILD)
     set_target_properties(installd PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 endif(FORCE_32BIT_BUILD)

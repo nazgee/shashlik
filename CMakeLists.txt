@@ -8,18 +8,26 @@ set(SHASHLIK_VERSION_MINOR 5)
 set(SHASHLIK_VERSION_RELEASE 0)
 set(SHASHLIK_VERSION_YEAR 2014)
 
+# set build type to debug as it is in development phase
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE DEBUG CACHE STRING
+    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
+endif()
+
+# enable verbose building
+if (NOT CMAKE_VERBOSE_MAKEFILE)
+    set(CMAKE_VERBOSE_MAKEFILE ON CACHE STRING "Enable compile verbose mode by default" FORCE)
+endif()
+
 # ----------------------------------------------------------------
 # Requirements
-
-
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake)
 
 
 # For Qt5 and KF5 stuff, you must set the CMake module path first. See
 # BUILDING for how to do that.
-
-find_package(Qt5 NO_MODULE COMPONENTS Core Quick Gui Widgets)
+# find_package(Qt5 NO_MODULE COMPONENTS Core Quick Gui Widgets)
 
 # set(KF5_VERSION "5.0.0") # handled by release scripts
 # set(KF5_DEP_VERSION "5.0.0") # handled by release scripts
@@ -34,15 +42,17 @@ include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(ECMInstallIcons)
 
-find_package(KF5 COMPONENTS I18n WindowSystem Service Package Declarative Plasma PlasmaQuick)
+# find_package(KF5 COMPONENTS I18n WindowSystem Service Package Declarative Plasma PlasmaQuick)
 # find_package(KF5 REQUIRED COMPONENTS
 # WindowSystem CoreAddons Solid Config Auth DBusAddons
 # I18n Service IconThemes Bookmarks
 # Plasma PlasmaQuick Declarative KIO KDELibs4Support
 # )
 
-find_package(OpenSSL REQUIRED)
-find_package(OpenGL REQUIRED)
+#find_package(OpenSSL REQUIRED)
+#find_package(OpenGL REQUIRED)
+
+#find_package(Libunwind REQUIRED)
 
 find_package(BISON)
 find_package(FLEX)
@@ -55,13 +65,13 @@ include(JarjarModule)
 include(TestBigEndian)
 TEST_BIG_ENDIAN(SystemIsBigEndian)
 
-include(FindPkgConfig)
-pkg_check_modules(DRM REQUIRED libdrm)
-IF(DRM_FOUND)
-    MESSAGE(STATUS "Looking for DRM - found at ${DRM_PREFIX}")
-ELSE(DRM_FOUND)
-    MESSAGE(STATUS "Looking for DRM - not found")
-ENDIF(DRM_FOUND)
+#include(FindPkgConfig)
+#pkg_check_modules(DRM REQUIRED libdrm)
+#IF(DRM_FOUND)
+#    MESSAGE(STATUS "Looking for DRM - found at ${DRM_PREFIX}")
+#ELSE(DRM_FOUND)
+#    MESSAGE(STATUS "Looking for DRM - not found")
+#ENDIF(DRM_FOUND)
 
 # ----------------------------------------------------------------
 # System settings
@@ -82,11 +92,6 @@ add_definitions(-DHAVE_SYS_UIO_H
                 -DWL_EGL_PLATFORM
 )
 
-# In case this file exists, we need to set this to look for certain files in the right place
-if(EXISTS "/usr/include/i386-linux-gnu")
-    add_definitions(-DHAS_SPECIAL_INCLUDE_DIRS=1)
-endif()
-
 # The android root directory is the installation location for the android system
 # itself, and used by the vm's various bits to load and check things.
 set(ANDROID_ROOT ${CMAKE_INSTALL_PREFIX}/android)
@@ -100,7 +105,7 @@ set(ANDROID_JAR_DIR ${ANDROID_ROOT}/system/framework)
 # This will force a 32bit build (read in various places and sets compiler/linker flags on binaries)
 # The reason we do this is that the dalvik vm expects to be running as 32bit, and we can't get
 # around this until a switch to art is made.
-set(FORCE_32BIT_BUILD true)
+#set(FORCE_32BIT_BUILD true)
 if(FORCE_32BIT_BUILD)
     # This is less than beautiful, but it works for now
     link_directories(/usr/lib/)
@@ -115,7 +120,7 @@ endif(FORCE_32BIT_BUILD)
 # FIXME: Should we perhaps have a test for 32/64 bit systems?
 # NOTE: As we are basing Shashlik on KitKat at the moment, 32bit is required. When we
 #       switch to Lollipop or greater, 64bit will become an option, but not until then.
-set(JIT_VM true)
+set(JIT_VM false)
 
 # This sets whether or not to build the various development helper tools which are
 # not required for the normal operation of the launcher itself.
@@ -130,6 +135,7 @@ set(ANDROID_LIBCORE_PATH           ${GENERAL_SOURCE_PATH}/android-libcore)
 set(ANDROID_FRAMEWORKS_NATIVE_PATH ${GENERAL_SOURCE_PATH}/android-frameworks-native)
 set(ANDROID_FRAMEWORKS_BASE        ${GENERAL_SOURCE_PATH}/android-frameworks-base)
 set(DALVIK_PATH                    ${GENERAL_SOURCE_PATH}/dalvik)
+set(ART_PATH                       ${GENERAL_SOURCE_PATH}/art)
 set(NATIVEHELPER_PATH              ${GENERAL_SOURCE_PATH}/android-libnativehelper)
 set(SAFE_IOP_PATH                  ${GENERAL_SOURCE_PATH}/safe-iop)
 set(SKIA_PATH                      ${GENERAL_SOURCE_PATH}/android-skia)
@@ -183,4 +189,4 @@ add_subdirectory(src)
 
 # This must be at the end, or we end up with these post install commands being
 # run before the install proccess is fully completed
-add_subdirectory(postinstall)
+# add_subdirectory(postinstall)

@@ -2,7 +2,7 @@
 #ifndef GIF_LIB_HACK
 #define GIF_LIB_HACK
 
-#include <../include/gif_lib.h>
+#include </usr/include/gif_lib.h>
 
 int DGifCloseFile(GifFileType * GifFile);
 

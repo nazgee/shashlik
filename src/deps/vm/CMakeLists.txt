@@ -21,7 +21,7 @@ add_definitions(
     -fstrict-aliasing -Wstrict-aliasing=2
     -Wall -Wextra -Wno-unused-parameter
     -DARCH_IA32
-    -DARCH_VARIANT="x86"
+    -DARCH_VARIANT="x86_64"
     -DDVM_SHOW_EXCEPTION=1
     -DWITH_JIT=1
     -DDVM_JMP_TABLE_MTERP=1
@@ -210,7 +210,8 @@ set(vm_HEADERS
 )
 
 add_library(dvm SHARED ${vm_SRCS} ${assembler_SRCS})
-set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-fstrict-aliasing -Wstrict-aliasing=2 -Wall -Wextra -Wno-unused-parameter")
+#set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-fstrict-aliasing -Wstrict-aliasing=2 -Wall -Wextra -Wno-unused-parameter")
+set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-fno-permissive")
 if(FORCE_32BIT_BUILD)
     set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 endif(FORCE_32BIT_BUILD)

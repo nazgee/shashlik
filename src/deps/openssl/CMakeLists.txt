@@ -509,23 +509,41 @@ set(crypto_SRCS
 #     ${REPO_PATH}/crypto/mem_clr.c \
 
 enable_language(ASM)
+#set(crypto_x86_SRCS
+#    ${REPO_PATH}/crypto/aes/asm/aes-586.S
+#    ${REPO_PATH}/crypto/aes/asm/aesni-x86.S
+#    ${REPO_PATH}/crypto/aes/asm/vpaes-x86.S
+#    ${REPO_PATH}/crypto/bf/asm/bf-586.S
+#    ${REPO_PATH}/crypto/bn/asm/bn-586.S
+#    ${REPO_PATH}/crypto/bn/asm/co-586.S
+#    ${REPO_PATH}/crypto/bn/asm/x86-gf2m.S
+#    ${REPO_PATH}/crypto/bn/asm/x86-mont.S
+#    ${REPO_PATH}/crypto/des/asm/crypt586.S
+#    ${REPO_PATH}/crypto/des/asm/des-586.S
+#    ${REPO_PATH}/crypto/md5/asm/md5-586.S
+#    ${REPO_PATH}/crypto/modes/asm/ghash-x86.S
+#    ${REPO_PATH}/crypto/sha/asm/sha1-586.S
+#    ${REPO_PATH}/crypto/sha/asm/sha256-586.S
+#    ${REPO_PATH}/crypto/sha/asm/sha512-586.S
+#    ${REPO_PATH}/crypto/x86cpuid.S
+#)
 set(crypto_x86_SRCS
-    ${REPO_PATH}/crypto/aes/asm/aes-586.S
-    ${REPO_PATH}/crypto/aes/asm/aesni-x86.S
-    ${REPO_PATH}/crypto/aes/asm/vpaes-x86.S
-    ${REPO_PATH}/crypto/bf/asm/bf-586.S
-    ${REPO_PATH}/crypto/bn/asm/bn-586.S
-    ${REPO_PATH}/crypto/bn/asm/co-586.S
-    ${REPO_PATH}/crypto/bn/asm/x86-gf2m.S
-    ${REPO_PATH}/crypto/bn/asm/x86-mont.S
-    ${REPO_PATH}/crypto/des/asm/crypt586.S
-    ${REPO_PATH}/crypto/des/asm/des-586.S
-    ${REPO_PATH}/crypto/md5/asm/md5-586.S
-    ${REPO_PATH}/crypto/modes/asm/ghash-x86.S
-    ${REPO_PATH}/crypto/sha/asm/sha1-586.S
-    ${REPO_PATH}/crypto/sha/asm/sha256-586.S
-    ${REPO_PATH}/crypto/sha/asm/sha512-586.S
-    ${REPO_PATH}/crypto/x86cpuid.S
+    ${REPO_PATH}/crypto/aes/asm/aes-x86_64.S
+    ${REPO_PATH}/crypto/aes/asm/aesni-sha1-x86_64.S
+    ${REPO_PATH}/crypto/aes/asm/aesni-x86_64.S
+    ${REPO_PATH}/crypto/aes/asm/bsaes-x86_64.S
+    ${REPO_PATH}/crypto/aes/asm/vpaes-x86_64.S
+    ${REPO_PATH}/crypto/bn/asm/modexp512-x86_64.S
+    ${REPO_PATH}/crypto/bn/asm/x86_64-gf2m.S
+    ${REPO_PATH}/crypto/bn/asm/x86_64-mont.S
+    ${REPO_PATH}/crypto/bn/asm/x86_64-mont5.S
+    ${REPO_PATH}/crypto/md5/asm/md5-x86_64.S
+    ${REPO_PATH}/crypto/modes/asm/ghash-x86_64.S
+    ${REPO_PATH}/crypto/rc4/asm/rc4-md5-x86_64.S
+    ${REPO_PATH}/crypto/sha/asm/sha1-x86_64.S
+    ${REPO_PATH}/crypto/sha/asm/sha256-x86_64.S
+    ${REPO_PATH}/crypto/sha/asm/sha512-x86_64.S
+    ${REPO_PATH}/crypto/x86_64cpuid.S
 )
 set_property(SOURCE ${crypto_x86_SRCS} PROPERTY LANGUAGE ASM)
 
