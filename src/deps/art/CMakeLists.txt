@@ -1,18 +1,19 @@
-#project(art)
+project(art)
 
-#set(REPO_PATH ${ART_PATH}/)
-#set(MODULE_PATH ${REPO_PATH}/vm)
+set(REPO_PATH ${ART_PATH}/runtime)
+#set(MODULE_PATH ${REPO_PATH}/runtime)
 #set(LIBENC_PATH ${MODULE_PATH}/compiler/codegen/x86/libenc)
 
-#include_directories(${REPO_PATH}
+include_directories(${REPO_PATH}
 #                    ${MODULE_PATH}
 #                    ${LIBENC_PATH}
-#                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDES}
 #                    ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
-#                    ${LIBNATIVEHELPER_INCLUDEDIRS}
+                    ${LIBNATIVEHELPER_INCLUDEDIRS}
 #                    ${LIBANDROIDCORE_INCLUDEDIRS}
 #                    ${LIBANDROIDLIBCORE_INCLUDEDIRS}
-#)
+                    ${ART_PATH}/sigchainlib
+)
 #include_directories(SYSTEM ${CMAKE_INSTALL_PREFIX}/include)
 
 #add_definitions(
@@ -26,195 +27,289 @@
 #    -DWITH_JIT=1
 #    -DDVM_JMP_TABLE_MTERP=1
 #    -DMTERP_STUB
-##     -UNDEBUG -DDEBUG=1 -DLOG_NDEBUG=1 -DWITH_DALVIK_ASSERT -DWITH_SELF_VERIFICATION
+#     -UNDEBUG -DDEBUG=1 -DLOG_NDEBUG=1 -DWITH_DALVIK_ASSERT -DWITH_SELF_VERIFICATION
 #)
 
-#if(SystemIsBigEndian)
-#    add_definitions(-DHAVE_BIG_ENDIAN)
-#else()
-#    add_definitions(-DHAVE_LITTLE_ENDIAN)
-#endif()
+# default art gc
+add_definitions(-DBUILDING_LIBART)
+add_definitions(-DART_BASE_ADDRESS_MIN_DELTA=-0x1000000)
+add_definitions(-DART_BASE_ADDRESS_MAX_DELTA=0x1000000)
+add_definitions(-DART_BASE_ADDRESS=0x60000000)
+include_directories(${CMAKE_SOURCE_DIR}/../libnativehelper/include/nativehelper)
+include_directories(${CMAKE_SOURCE_DIR}/fakes/includes)
+include_directories(.)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/system/)
+include_directories(${CMAKE_SOURCE_DIR}/sigchainlib)
+include_directories(${CMAKE_SOURCE_DIR}/cmdline)
+#set(SRC_LIST "")
+#list(APPEND SRC_LIST ${REPO_PATH}/art_field.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/atomic.cc.arm)
+list(APPEND SRC_LIST ${REPO_PATH}/barrier.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/allocator.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/base/arena_allocator.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/bit_vector.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/hex_dump.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/logging.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/mutex.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/base/scoped_arena_allocator.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/scoped_flock.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/stringpiece.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/stringprintf.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/timing_logger.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/unix_file/fd_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/unix_file/mapped_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/unix_file/null_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/unix_file/random_access_file_utils.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/base/unix_file/string_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/check_jni.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/class_linker.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/common_throws.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/debugger.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/dex_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/dex_file_verifier.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/dex_instruction.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/elf_file.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/field_helper.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/allocator/dlmalloc.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/allocator/rosalloc.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/bitmap.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/card_table.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/heap_bitmap.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/mod_union_table.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/remembered_set.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/accounting/space_bitmap.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/concurrent_copying.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/garbage_collector.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/immune_region.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/mark_compact.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/mark_sweep.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/partial_mark_sweep.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/semi_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/collector/sticky_mark_sweep.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/gc_cause.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/heap.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/reference_processor.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/reference_queue.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/bump_pointer_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/dlmalloc_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/image_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/large_object_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/malloc_space.cc)
+#$list(APPEND SRC_LIST ${REPO_PATH}/gc/space/region_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/rosalloc_space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/space.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/gc/space/zygote_space.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/gc/task_processor.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/hprof/hprof.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/image.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/indirect_reference_table.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/instruction_set.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/instrumentation.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/intern_table.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/interpreter/interpreter.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/interpreter/interpreter_common.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/interpreter/interpreter_goto_table_impl.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/interpreter/interpreter_switch_impl.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/interpreter/unstarted_runtime.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/java_vm_ext.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_event.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_expand_buf.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_handler.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_main.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_request.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/jdwp_socket.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jdwp/object_registry.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/jni_env_ext.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/jit/jit.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/jit/jit_code_cache.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/jit/jit_instrumentation.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jni_internal.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/jobject_comparator.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/linear_alloc.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mem_map.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/memory_region.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/method_helper.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/mirror/abstract_method.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/art_field.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/art_method.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/array.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/class.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/dex_cache.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/mirror/field.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/mirror/method.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/object.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/reference.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/stack_trace_element.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/string.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/mirror/throwable.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/monitor.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native_bridge_art_interface.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/dalvik_system_DexFile.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/dalvik_system_VMDebug.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/dalvik_system_VMRuntime.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/dalvik_system_VMStack.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/dalvik_system_ZygoteHooks.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_Class.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_DexCache.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_Object.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_Runtime.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_String.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_System.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_Thread.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_Throwable.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_VMClassLoader.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_ref_FinalizerReference.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_ref_Reference.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_reflect_Array.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_reflect_Constructor.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_reflect_Field.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_reflect_Method.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_lang_reflect_Proxy.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/java_util_concurrent_atomic_AtomicLong.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/org_apache_harmony_dalvik_ddmc_DdmServer.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/org_apache_harmony_dalvik_ddmc_DdmVmInternal.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/native/sun_misc_Unsafe.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/oat.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/oat_file.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/oat_file_assistant.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/object_lock.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/offsets.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/os_linux.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/parsed_options.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/primitive.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/quick_exception_handler.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/quick/inline_method_analyser.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/reference_table.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/reflection.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/runtime.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/runtime_options.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/signal_catcher.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/stack.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/stack_map.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/thread.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/thread_list.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/thread_pool.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/throw_location.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/trace.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/transaction.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/profiler.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/fault_handler.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/utf.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/utils.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/dex_gc_map.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/instruction_flags.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/method_verifier.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/reg_type.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/reg_type_cache.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/verifier/register_line.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/well_known_classes.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/zip_archive.cc)
 
-#if (JIT_VM)
-#   add_definitions(${JIT_DEFS})
-#else (JIT_VM)
-#    add_definitions(-DdvmAsmInstructionStart=0 -DdvmAsmInstructionEnd=0
-#                    -DdvmAsmSisterStart=0 -DdvmAsmSisterEnd=0 -DDVM_NO_ASM_INTERP=1)
-#endif (JIT_VM)
+file(GLOB GENERATED_ENUMS ${CMAKE_SOURCE_DIR}/generated_enums/*.cc)
 
-#if (JIT_VM)
-#    set(libenc_SRCS
-#        ${LIBENC_PATH}/dec_base.cpp
-#        ${LIBENC_PATH}/enc_base.cpp
-#        ${LIBENC_PATH}/enc_wrapper.cpp
-#        ${LIBENC_PATH}/enc_tabl.cpp
-#    )
+list(APPEND SRC_LIST ${REPO_PATH}/arch/context.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/instruction_set.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/instruction_set_features.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/memcmp16.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/arm/instruction_set_features_arm.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/arm/registers_arm.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/arm64/instruction_set_features_arm64.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/arm64/registers_arm64.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/x86/instruction_set_features_x86.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86/registers_x86.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/mips/instruction_set_features_mips.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/mips/registers_mips.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/mips64/instruction_set_features_mips64.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/mips64/registers_mips64.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/instruction_set_features_x86_64.cc)
+#list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/registers_x86_64.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/entrypoint_utils.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/interpreter/interpreter_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/jni/jni_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/math_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_alloc_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_cast_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_dexcache_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_field_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_fillarray_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_invoke_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_jni_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_lock_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_thread_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_throw_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/portable/portable_trampoline_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_alloc_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_cast_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_deoptimization_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_dexcache_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_field_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_fillarray_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_instrumentation_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_jni_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_lock_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_math_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_thread_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_throw_entrypoints.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/entrypoints/quick/quick_trampoline_entrypoints.cc)
 
-#    enable_language(ASM)
-#    set(assembler_SRCS
-#        ${MODULE_PATH}/mterp/out/InterpAsm-x86.S
-#        ${MODULE_PATH}/arch/x86/Call386ABI.S
-#    )
-#    set_property(SOURCE ${assembler_SRCS} PROPERTY LANGUAGE ASM)
+# Source files that only compile with GCC.
+list(APPEND SRC_LIST ${REPO_PATH}/interpreter/interpreter_goto_table_impl.cc)
 
-#    set(vm_compiler_SRCS
-#        ${MODULE_PATH}/arch/x86/Hints386ABI.cpp
-#        ${MODULE_PATH}/mterp/out/InterpC-x86.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerAlu.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerConst.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerMove.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/Lower.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerHelper.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerJump.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerObject.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/AnalysisO1.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/BytecodeVisitor.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/NcgAot.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/CodegenInterface.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerInvoke.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerReturn.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/NcgHelper.cpp
-#        ${MODULE_PATH}/compiler/codegen/x86/LowerGetPut.cpp
-#        ${MODULE_PATH}/compiler/Compiler.cpp
-#        ${MODULE_PATH}/compiler/Frontend.cpp
-#        ${MODULE_PATH}/compiler/Utility.cpp
-#        ${MODULE_PATH}/compiler/InlineTransformation.cpp
-#        ${MODULE_PATH}/compiler/IntermediateRep.cpp
-#        ${MODULE_PATH}/compiler/Dataflow.cpp
-#        ${MODULE_PATH}/compiler/SSATransformation.cpp
-#        ${MODULE_PATH}/compiler/Loop.cpp
-#        ${MODULE_PATH}/compiler/Ralloc.cpp
-#        ${MODULE_PATH}/interp/Jit.cpp
-#     )
-#else (JIT_VM)
-#    set(vm_compiler_SRCS
-#        ${MODULE_PATH}/arch/generic/Call.cpp
-#        ${MODULE_PATH}/arch/generic/Hints.cpp
-#        ${MODULE_PATH}/mterp/out/InterpC-allstubs.cpp)
-#endif (JIT_VM)
+# FIXME I don't know if this should be compiled?
+#LIBART_TARGET_SRC_FILES := \
+#  $(LIBART_COMMON_SRC_FILES) \
+#  base/logging_android.cc \
+#  jdwp/jdwp_adb.cc \
+#  monitor_android.cc \
+#  runtime_android.cc \
+#  thread_android.cc
 
-#set(vm_SRCS
-#    ${libenc_SRCS}
-#    ${vm_compiler_SRCS}
-#    ${MODULE_PATH}/mterp/out/InterpC-portable.cpp
-#    ${MODULE_PATH}/mterp/Mterp.cpp
-#    ${MODULE_PATH}/InlineNative.cpp
-#    ${MODULE_PATH}/AllocTracker.cpp
-#    ${MODULE_PATH}/Atomic.cpp
-#    ${MODULE_PATH}/AtomicCache.cpp
-#    ${MODULE_PATH}/BitVector.cpp
-#    ${MODULE_PATH}/CheckJni.cpp
-#    ${MODULE_PATH}/Ddm.cpp
-#    ${MODULE_PATH}/Debugger.cpp
-#    ${MODULE_PATH}/DvmDex.cpp
-#    ${MODULE_PATH}/Exception.cpp
-#    ${MODULE_PATH}/Hash.cpp
-#    ${MODULE_PATH}/IndirectRefTable.cpp
-#    ${MODULE_PATH}/Init.cpp
-#    ${MODULE_PATH}/InitRefs.cpp
-#    ${MODULE_PATH}/Inlines.cpp
-#    ${MODULE_PATH}/Intern.cpp
-#    ${MODULE_PATH}/Jni.cpp
-#    ${MODULE_PATH}/JarFile.cpp
-#    ${MODULE_PATH}/LinearAlloc.cpp
-#    ${MODULE_PATH}/Misc.cpp
-#    ${MODULE_PATH}/Native.cpp
-#    ${MODULE_PATH}/PointerSet.cpp
-#    ${MODULE_PATH}/Profile.cpp
-#    ${MODULE_PATH}/RawDexFile.cpp
-#    ${MODULE_PATH}/ReferenceTable.cpp
-#    ${MODULE_PATH}/SignalCatcher.cpp
-#    ${MODULE_PATH}/StdioConverter.cpp
-#    ${MODULE_PATH}/Sync.cpp
-#    ${MODULE_PATH}/Thread.cpp
-#    ${MODULE_PATH}/UtfString.cpp
-#    ${MODULE_PATH}/alloc/Alloc.cpp
-#    ${MODULE_PATH}/alloc/CardTable.cpp
-#    ${MODULE_PATH}/alloc/DlMalloc.cpp
-#    ${MODULE_PATH}/alloc/Heap.cpp
-#    ${MODULE_PATH}/alloc/HeapBitmap.cpp
-#    ${MODULE_PATH}/alloc/HeapSource.cpp
-#    ${MODULE_PATH}/alloc/HeapDebug.cpp
-#    ${MODULE_PATH}/alloc/DdmHeap.cpp
-#    ${MODULE_PATH}/alloc/Verify.cpp
-#    ${MODULE_PATH}/alloc/Visit.cpp
-#    ${MODULE_PATH}/alloc/MarkSweep.cpp
-#    ${MODULE_PATH}/analysis/CodeVerify.cpp
-#    ${MODULE_PATH}/analysis/DexPrepare.cpp
-#    ${MODULE_PATH}/analysis/DexVerify.cpp
-#    ${MODULE_PATH}/analysis/Liveness.cpp
-#    ${MODULE_PATH}/analysis/Optimize.cpp
-#    ${MODULE_PATH}/analysis/RegisterMap.cpp
-#    ${MODULE_PATH}/analysis/VerifySubs.cpp
-#    ${MODULE_PATH}/analysis/VfyBasicBlock.cpp
-#    ${MODULE_PATH}/hprof/Hprof.cpp
-#    ${MODULE_PATH}/hprof/HprofClass.cpp
-#    ${MODULE_PATH}/hprof/HprofHeap.cpp
-#    ${MODULE_PATH}/hprof/HprofOutput.cpp
-#    ${MODULE_PATH}/hprof/HprofString.cpp
-#    ${MODULE_PATH}/interp/Interp.cpp
-#    ${MODULE_PATH}/interp/Stack.cpp
-#    ${MODULE_PATH}/jdwp/ExpandBuf.cpp
-#    ${MODULE_PATH}/jdwp/JdwpAdb.cpp
-#    ${MODULE_PATH}/jdwp/JdwpConstants.cpp
-#    ${MODULE_PATH}/jdwp/JdwpEvent.cpp
-#    ${MODULE_PATH}/jdwp/JdwpHandler.cpp
-#    ${MODULE_PATH}/jdwp/JdwpMain.cpp
-#    ${MODULE_PATH}/jdwp/JdwpSocket.cpp
-#    ${MODULE_PATH}/native/InternalNative.cpp
-#    ${MODULE_PATH}/native/dalvik_bytecode_OpcodeInfo.cpp
-#    ${MODULE_PATH}/native/dalvik_system_DexFile.cpp
-#    ${MODULE_PATH}/native/dalvik_system_VMDebug.cpp
-#    ${MODULE_PATH}/native/dalvik_system_VMRuntime.cpp
-#    ${MODULE_PATH}/native/dalvik_system_VMStack.cpp
-#    ${MODULE_PATH}/native/dalvik_system_Zygote.cpp
-#    ${MODULE_PATH}/native/java_lang_Class.cpp
-#    ${MODULE_PATH}/native/java_lang_Double.cpp
-#    ${MODULE_PATH}/native/java_lang_Float.cpp
-#    ${MODULE_PATH}/native/java_lang_Math.cpp
-#    ${MODULE_PATH}/native/java_lang_Object.cpp
-#    ${MODULE_PATH}/native/java_lang_Runtime.cpp
-#    ${MODULE_PATH}/native/java_lang_String.cpp
-#    ${MODULE_PATH}/native/java_lang_System.cpp
-#    ${MODULE_PATH}/native/java_lang_Throwable.cpp
-#    ${MODULE_PATH}/native/java_lang_VMClassLoader.cpp
-#    ${MODULE_PATH}/native/java_lang_VMThread.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_AccessibleObject.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_Array.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_Constructor.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_Field.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_Method.cpp
-#    ${MODULE_PATH}/native/java_lang_reflect_Proxy.cpp
-#    ${MODULE_PATH}/native/java_util_concurrent_atomic_AtomicLong.cpp
-#    ${MODULE_PATH}/native/org_apache_harmony_dalvik_NativeTestTarget.cpp
-#    ${MODULE_PATH}/native/org_apache_harmony_dalvik_ddmc_DdmServer.cpp
-#    ${MODULE_PATH}/native/org_apache_harmony_dalvik_ddmc_DdmVmInternal.cpp
-#    ${MODULE_PATH}/native/sun_misc_Unsafe.cpp
-#    ${MODULE_PATH}/oo/AccessCheck.cpp
-#    ${MODULE_PATH}/oo/Array.cpp
-#    ${MODULE_PATH}/oo/Class.cpp
-#    ${MODULE_PATH}/oo/Object.cpp
-#    ${MODULE_PATH}/oo/Resolve.cpp
-#    ${MODULE_PATH}/oo/TypeCheck.cpp
-#    ${MODULE_PATH}/os/linux.cpp
-#    ${MODULE_PATH}/reflect/Annotation.cpp
-#    ${MODULE_PATH}/reflect/Proxy.cpp
-#    ${MODULE_PATH}/reflect/Reflect.cpp
-#    ${MODULE_PATH}/test/TestHash.cpp
-#    ${MODULE_PATH}/test/TestIndirectRefTable.cpp
-#)
+# FIXME Think about 32 bits too
+#LIBART_SRC_FILES_x86 := \
+#  arch/x86/context_x86.cc \
+#  arch/x86/entrypoints_init_x86.cc \
+#  arch/x86/jni_entrypoints_x86.S \
+#  arch/x86/memcmp16_x86.S \
+#  arch/x86/portable_entrypoints_x86.S \
+#  arch/x86/quick_entrypoints_x86.S \
+#  arch/x86/thread_x86.cc \
+#  arch/x86/fault_handler_x86.cc
 
-#set(vm_HEADERS
-#    ${REPO_PATH}/vm/Common.h
-#    ${REPO_PATH}/vm/DalvikVersion.h
-#)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/context_x86_64.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/entrypoints_init_x86_64.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/jni_entrypoints_x86_64.S)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/memcmp16_x86_64.S)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/portable_entrypoints_x86_64.S)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/quick_entrypoints_x86_64.S)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86_64/thread_x86_64.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/monitor_pool.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/arch/x86/fault_handler_x86.cc)
 
-#add_library(dvm SHARED ${vm_SRCS} ${assembler_SRCS})
-##set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-fstrict-aliasing -Wstrict-aliasing=2 -Wall -Wextra -Wno-unused-parameter")
-#set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-fno-permissive")
-#if(FORCE_32BIT_BUILD)
-#    set_target_properties(dvm PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-#endif(FORCE_32BIT_BUILD)
+set_property(SOURCE arch/x86_64/jni_entrypoints_x86_64.S PROPERTY LANGUAGE ASM)
+set_property(SOURCE arch/x86_64/memcmp16_x86_64.S PROPERTY LANGUAGE ASM)
+set_property(SOURCE arch/x86_64/portable_entrypoints_x86_64.S PROPERTY LANGUAGE ASM)
+set_property(SOURCE arch/x86_64/quick_entrypoints_x86_64.S PROPERTY LANGUAGE ASM)
+
+# HOST Files
+list(APPEND SRC_LIST ${REPO_PATH}/base/logging_linux.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/monitor_linux.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/runtime_linux.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/thread_linux.cc)
+
+add_definitions(-DUSE_DLMALLOC -std=gnu++11)
+#add_definitions(-DART_USE_PORTABLE_COMPILER=1)
+add_definitions(-DIMT_SIZE=64)
+add_definitions(-DART_DEFAULT_GC_TYPE_IS_CMS
+    -DART_DEFAULT_INSTRUCTION_SET_FEATURES=default
+    -DANDROID_SMP=1
+#    -DART_BASE_ADDRESS=0x60000000
+)
+
+
+add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${GENERATED_ENUMS})
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/disassembler/libart-disassembler.so)
+
 #target_link_libraries(dvm
 #    dex
 #    shashlik_jni

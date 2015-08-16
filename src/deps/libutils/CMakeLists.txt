@@ -8,10 +8,10 @@ include_directories(
     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include
 )
 
-add_definitions(-DHAVE_POSIX_FILEMAP
-                -DHAVE_OFF64_T
-                -DHAVE_SYS_UIO_H
-                -DHAVE_PTHREADS
+add_definitions(#-DHAVE_POSIX_FILEMAP
+                #-DHAVE_OFF64_T
+                #-DHAVE_SYS_UIO_H
+                #-DHAVE_PTHREADS
                 -DOS_PATH_SEPARATOR='/'
                 -DANDROID_SMP=1
 )

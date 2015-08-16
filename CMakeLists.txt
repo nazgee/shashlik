@@ -79,13 +79,13 @@ TEST_BIG_ENDIAN(SystemIsBigEndian)
 # It is necessary to note that we have endian.h, which we do on all systems we
 # target otherwise the android code goes and redefines it all on us. Not so
 # great...
-add_definitions(-DHAVE_SYS_UIO_H
-                -DHAVE_ENDIAN_H
-                -DHAVE_OFF64_T   # FIXME: Need to investigate which gcc flags is needed to get this
-                -DHAVE_SYS_SOCKET_H
-                -DHAVE_PTHREADS
-                -DHAVE_POSIX_CLOCKS
-                -DHAVE_SYSTEM_PROPERTY_SERVER
+add_definitions(#-DHAVE_SYS_UIO_H
+                #-DHAVE_ENDIAN_H
+                #-DHAVE_OFF64_T   # FIXME: Need to investigate which gcc flags is needed to get this
+                #-DHAVE_SYS_SOCKET_H
+                #-DHAVE_PTHREADS
+                #-DHAVE_POSIX_CLOCKS
+                #-DHAVE_SYSTEM_PROPERTY_SERVER
                 -D_FILE_OFFSET_BITS=64
                 -DEXCLUDE_FS_CONFIG_STRUCTURES
                 -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
@@ -184,7 +184,7 @@ set(LIBBINDER_INCLUDES ${CMAKE_SOURCE_DIR}/src/libs/libbinder
 
 # ----------------------------------------------------------------
 
-
+add_definitions(-include ${CMAKE_SOURCE_DIR}/src/AndroidConfig.h)
 add_subdirectory(src)
 
 # This must be at the end, or we end up with these post install commands being
