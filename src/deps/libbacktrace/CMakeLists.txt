@@ -34,7 +34,7 @@ set(SRC
 add_library(${PROJECT_NAME} SHARED ${SRC})
 #FIXME: add find_package into main CMakeLists.txt
 target_link_libraries(${PROJECT_NAME}
-    dl unwind unwind-ptrace
+    dl unwind unwind-ptrace log
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})

@@ -1,4 +1,4 @@
-project(art)
+project(art C ASM)
 
 set(REPO_PATH ${ART_PATH}/runtime)
 #set(MODULE_PATH ${REPO_PATH}/runtime)
@@ -44,7 +44,7 @@ include_directories(${CMAKE_SOURCE_DIR}/sigchainlib)
 include_directories(${CMAKE_SOURCE_DIR}/cmdline)
 #set(SRC_LIST "")
 #list(APPEND SRC_LIST ${REPO_PATH}/art_field.cc)
-#list(APPEND SRC_LIST ${REPO_PATH}/atomic.cc.arm)
+list(APPEND SRC_LIST ${REPO_PATH}/atomic.cc)
 list(APPEND SRC_LIST ${REPO_PATH}/barrier.cc)
 list(APPEND SRC_LIST ${REPO_PATH}/base/allocator.cc)
 #list(APPEND SRC_LIST ${REPO_PATH}/base/arena_allocator.cc)
@@ -303,11 +303,55 @@ add_definitions(-DIMT_SIZE=64)
 add_definitions(-DART_DEFAULT_GC_TYPE_IS_CMS
     -DART_DEFAULT_INSTRUCTION_SET_FEATURES=default
     -DANDROID_SMP=1
-#    -DART_BASE_ADDRESS=0x60000000
+    -fno-rtti
+    -m64
+    #-fvisibility=protected
+    #-fstrict-aliasing
+    -ggdb3
+    # madness
+    -fno-exceptions
+    -Wa,--noexecstack
+    -no-canonical-prefixes
+    -O2
+    -fno-strict-aliasing
+    #-Wno-multichar
+    #-msoft-float
+    #-ffunction-sections
+    #-fdata-sections
+    #-funwind-tables
+    #-fstack-protector
+    #-Wa,--noexecstack
+    #-Werror=format-security
+    #-fno-short-enums
+    #-no-canonical-prefixes
+    #-fno-canonical-system-headers
+    #-fno-builtin-sin
+    #-fno-strict-volatile-bitfields
+    #-Wno-psabi
+    #-fmessage-length=0
+    #-W
+    #-Wall
+    #-Wno-unused
+    #-Winit-self
+    #-Wpointer-arith
+    #-Werror=return-type
+    #-Werror=non-virtual-dtor
+    #-Werror=address
+    #-Werror=sequence-point
+    #-Wstrict-aliasing=2
+    #-fgcse-after-reload
+    #-frerun-cse-after-loop
+    #-frename-registers
+    #-fvisibility-inlines-hidden
+    #-Wpointer-arith
+    #-Os
+    #-fomit-frame-pointer
+    #-fno-strict-aliasing
+    #-Wextra
+    #-Wframe-larger-than=1728
 )
 
 
-add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${GENERATED_ENUMS})
 #target_link_libraries(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/disassembler/libart-disassembler.so)
 
 #target_link_libraries(dvm
@@ -321,3 +365,72 @@ add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${GENERATED_ENUMS})
 #        ${vm_HEADERS}
 #        DESTINATION include/dex)
 
+# dex2oat
+#set(REPO_PATH ${ART_PATH}/dex2oat)
+include_directories(${REPO_PATH}
+#                    ${MODULE_PATH}
+#                    ${LIBENC_PATH}
+                    ${LIBCUTILS_INCLUDES}
+#                    ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
+                    ${LIBNATIVEHELPER_INCLUDEDIRS}
+#                    ${LIBANDROIDCORE_INCLUDEDIRS}
+#                    ${LIBANDROIDLIBCORE_INCLUDEDIRS}
+                    ${ART_PATH}/sigchainlib
+                    ${ART_PATH}/compiler
+)
+add_executable(dex2oat ${ART_PATH}/dex2oat/dex2oat.cc)
+target_link_libraries(dex2oat art)
+
+set(ENUMS_SRC
+    ${REPO_PATH}/arch/x86_64/registers_x86_64.h
+    ${REPO_PATH}/base/allocator.h
+    ${REPO_PATH}/base/mutex.h
+    ${REPO_PATH}/base/unix_file/fd_file.h
+    ${REPO_PATH}/dex_file.h
+    ${REPO_PATH}/dex_instruction.h
+    ${REPO_PATH}/gc_root.h
+    ${REPO_PATH}/gc/collector/gc_type.h
+    ${REPO_PATH}/gc/collector_type.h
+    ${REPO_PATH}/gc/space/space.h
+    ${REPO_PATH}/gc/heap.h
+    ${REPO_PATH}/indirect_reference_table.h
+    ${REPO_PATH}/instruction_set.h
+    ${REPO_PATH}/invoke_type.h
+    ${REPO_PATH}/jdwp/jdwp.h
+    ${REPO_PATH}/jdwp/jdwp_constants.h
+    ${REPO_PATH}/lock_word.h
+    ${REPO_PATH}/mirror/class.h
+    ${REPO_PATH}/oat.h
+    ${REPO_PATH}/quick/inline_method_analyser.h
+    ${REPO_PATH}/thread.h
+    ${REPO_PATH}/thread_state.h
+    ${REPO_PATH}/verifier/method_verifier.h
+)
+
+function(generate_enums gf)
+    set(generated_files "")
+    foreach(src ${ARGN})
+        message(SRC: ${src})
+        string(REPLACE .h .cc enum_impl ${src})
+        string(REPLACE ${REPO_PATH} "" enum_impl ${enum_impl})
+        get_filename_component(dir ${enum_impl} DIRECTORY)
+        if (dir)
+            file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${dir})
+        endif()
+        add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${enum_impl}
+            COMMAND ${ART_PATH}/tools/generate-operator-out.py ${REPO_PATH} ${src} > ${CMAKE_CURRENT_BINARY_DIR}/${enum_impl}
+            DEPENDS ${src}
+            IMPLICIT_DEPENDS CXX ${src})
+        list(APPEND generated_files ${CMAKE_CURRENT_BINARY_DIR}/${enum_impl})
+        set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/${enum_impl} PROPERTIES GENERATED TRUE)
+    endforeach()
+    add_custom_target(${PROJECT_NAME}_generated_enums DEPENDS ${generated_files})
+    message(br1: ${generated_files})
+    set(${gf} ${generated_files} PARENT_SCOPE)
+endfunction()
+
+generate_enums(GENERATED_ENUMS ${ENUMS_SRC})
+message(br: ${GENERATED_ENUMS})
+add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${GENERATED_ENUMS})
+target_link_libraries(${PROJECT_NAME} pthread backtrace)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_generated_enums)
