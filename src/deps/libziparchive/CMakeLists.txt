@@ -1,16 +1,20 @@
-project(libziparchive)
+project(ziparchive)
+
+set(REPO_PATH ${ANDROID_CORE_PATH}/libziparchive)
 
 set(ziparchive_SRCS
-    zip_archive.cc
+    ${REPO_PATH}/zip_archive.cc
 )
 
 add_library(ziparchive SHARED ${ziparchive_SRCS})
 target_include_directories(ziparchive
     PRIVATE
     ${LIBLOG_INCLUDES}
+    ${LIBNATIVEHELPER_INCLUDEDIRS}
 )
 target_link_libraries(ziparchive
-    base
+    z
+    utils
 )
 set_target_properties(ziparchive PROPERTIES COMPILE_FLAGS "-std=c++11")
 if(FORCE_32BIT_BUILD)

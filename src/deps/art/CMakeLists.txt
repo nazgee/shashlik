@@ -125,7 +125,7 @@ list(APPEND SRC_LIST ${REPO_PATH}/jdwp/object_registry.cc)
 #list(APPEND SRC_LIST ${REPO_PATH}/jit/jit_code_cache.cc)
 #list(APPEND SRC_LIST ${REPO_PATH}/jit/jit_instrumentation.cc)
 list(APPEND SRC_LIST ${REPO_PATH}/jni_internal.cc)
-#list(APPEND SRC_LIST ${REPO_PATH}/jobject_comparator.cc)
+list(APPEND SRC_LIST ${REPO_PATH}/jobject_comparator.cc)
 #list(APPEND SRC_LIST ${REPO_PATH}/linear_alloc.cc)
 list(APPEND SRC_LIST ${REPO_PATH}/mem_map.cc)
 list(APPEND SRC_LIST ${REPO_PATH}/memory_region.cc)
@@ -378,8 +378,8 @@ include_directories(${REPO_PATH}
                     ${ART_PATH}/sigchainlib
                     ${ART_PATH}/compiler
 )
-add_executable(dex2oat ${ART_PATH}/dex2oat/dex2oat.cc)
-target_link_libraries(dex2oat art)
+#add_executable(dex2oat ${ART_PATH}/dex2oat/dex2oat.cc)
+#target_link_libraries(dex2oat art)
 
 set(ENUMS_SRC
     ${REPO_PATH}/arch/x86_64/registers_x86_64.h
@@ -432,5 +432,8 @@ endfunction()
 generate_enums(GENERATED_ENUMS ${ENUMS_SRC})
 message(br: ${GENERATED_ENUMS})
 add_library(${PROJECT_NAME} SHARED ${SRC_LIST} ${GENERATED_ENUMS})
-target_link_libraries(${PROJECT_NAME} pthread backtrace)
+target_link_libraries(${PROJECT_NAME} pthread backtrace nativehelper ziparchive nativebridge utils)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_generated_enums)
+
+add_executable(art_test tests/art_test.cpp)
+target_link_libraries(art_test art)

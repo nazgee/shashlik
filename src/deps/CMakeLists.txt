@@ -12,7 +12,8 @@ add_subdirectory(libcutils)       # android-core
 #add_subdirectory(libpixelflinger) # android-core
 #add_subdirectory(libusbhost)      # android-core
 
-#add_subdirectory(libnativehelper) # native-helper
+add_subdirectory(libnativehelper) # native-helper
+add_subdirectory(libnativebridge) # native-bridge
 
 #add_subdirectory(safe-iop)        # safe-iop
 
@@ -39,7 +40,7 @@ add_subdirectory(libcutils)       # android-core
 #add_subdirectory(installd)
 
 #add_subdirectory(libbase)
-#add_subdirectory(libziparchive)
+add_subdirectory(libziparchive)
 
 # ----------------------------------------------------------------
 #                             Dalvik
