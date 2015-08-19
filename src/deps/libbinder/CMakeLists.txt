@@ -6,11 +6,11 @@ set(INCLUDE_PATH ${REPO_PATH}/include/binder)
 include_directories(
                     ${CMAKE_CURRENT_SOURCE_DIR}
 #                    ${REPO_PATH}/include
-                    ${LIBBINDER_INCLUDES}
+                    ${LIBBINDER_INCLUDE_DIR}
                     ${LIBUTILS_INCLUDES}
                     ${LIBCUTILS_INCLUDES}
 )
-#message("INC DIRS ARE ${LIBBINDER_INCLUDES}")
+#message("INC DIRS ARE ${LIBBINDER_INCLUDE_DIR}")
 
 add_definitions(-fpermissive                # for redeclaration of  char32_t
 )
@@ -78,13 +78,12 @@ endif(FORCE_32BIT_BUILD)
 #    PUBLIC
 #    -DHAVE_ANDROID_OS
 #)
-target_link_libraries(${PROJECT_NAME} utils)
+target_link_libraries(${PROJECT_NAME} utils cutils)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})
 install(FILES
         ${binder_LIB_HEADERS}
         DESTINATION include/binder)
 
-add_executable(binder_test tests/binder_test.cpp)
-target_link_libraries(binder_test binder)
+add_subdirectory(tests)
 

@@ -26,7 +26,7 @@ set(nativehelper_HEADERS
    ${LIBNATIVEHELPER_INCLUDES}/UniquePtr.h
 )
 
-include_directories(${LIBNATIVEHELPER_INCLUDES})
+include_directories(${LIBNATIVEHELPER_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../android-core/include) # for android/log.h
 include_directories(SYSTEM ${CMAKE_INSTALL_PREFIX}/include)
 
@@ -34,7 +34,7 @@ add_library(nativehelper SHARED ${nativehelper_SRCS})
 if(FORCE_32BIT_BUILD)
     set_target_properties(nativehelper PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
 endif(FORCE_32BIT_BUILD)
-target_link_libraries(nativehelper dl)
+target_link_libraries(nativehelper dl log)
 
 install(TARGETS nativehelper DESTINATION ${ANDROID_LIB_DIR})
 install(FILES

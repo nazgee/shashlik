@@ -53,7 +53,7 @@ add_subdirectory(libziparchive)
 
 # dalvik vm
 #add_subdirectory(vm)
-add_subdirectory(art)
+#add_subdirectory(art)
 #add_subdirectory(javalibrary-core)
 #add_subdirectory(javalibrary-conscrypt)
 #add_subdirectory(javalibrary-bouncycastle)

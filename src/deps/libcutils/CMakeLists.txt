@@ -9,7 +9,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 add_definitions(-D_GNU_SOURCE
                 -DHAVE_LINUX_LOCAL_SOCKET_NAMESPACE
                 -DANDROID_SMP=0
-                #-DHAVE_SYSTEM_PROPERTY_SERVER
 )
 set(REPO_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../../android-core)
 

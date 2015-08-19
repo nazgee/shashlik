@@ -17,7 +17,7 @@ endif(FORCE_32BIT_BUILD)
 target_include_directories(servicemanager
     PRIVATE
     ${LIBLOG_INCLUDES}
-    ${LIBBINDER_INCLUDES}
+    ${LIBBINDER_INCLUDE_DIR}
 )
 target_link_libraries(servicemanager log selinux)
 
