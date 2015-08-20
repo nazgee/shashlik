@@ -167,7 +167,7 @@ set(hwcomposer_drm_SRCS
 #     ${REPO_PATH}/include
 #     ${REPO_PATH}/libs
 #     ${REPO_PATH}/libs/GLES_trace
-#     ${LIBCUTILS_INCLUDES}
+#     ${LIBCUTILS_INCLUDE_DIR}
 #     ${GENERAL_SOURCE_PATH}/protobuf/src
 #     ${GENERAL_SOURCE_PATH} # for liblzf/lzf.h
 #     ${CMAKE_SOURCE_DIR}/src/deps/stripped_bionic # for the hackified bionic_tls.h
@@ -189,7 +189,7 @@ set(hwcomposer_drm_SRCS
 #     PRIVATE
 #     ${REPO_PATH}/include
 #     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include
-#     ${LIBCUTILS_INCLUDES}
+#     ${LIBCUTILS_INCLUDE_DIR}
 #     ${CMAKE_SOURCE_DIR}/src/deps/stripped_bionic # for the hackified bionic_tls.h
 #     ${GENERAL_SOURCE_PATH}/libhardware/include
 # )
@@ -295,7 +295,7 @@ target_link_libraries(hwcomposer.shashlik
 # target_include_directories(GLESv1_CM
 #     PRIVATE
 #     ${REPO_PATH}/include
-#     ${LIBCUTILS_INCLUDES}
+#     ${LIBCUTILS_INCLUDE_DIR}
 #     ${CMAKE_SOURCE_DIR}/src/deps/stripped_bionic # for the hackified bionic_tls.h
 # )
 # 
@@ -314,7 +314,7 @@ target_link_libraries(hwcomposer.shashlik
 # target_include_directories(GLESv2
 #     PRIVATE
 #     ${REPO_PATH}/include
-#     ${LIBCUTILS_INCLUDES}
+#     ${LIBCUTILS_INCLUDE_DIR}
 #     ${CMAKE_SOURCE_DIR}/src/deps/stripped_bionic # for the hackified bionic_tls.h
 # )
 

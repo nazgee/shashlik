@@ -12,7 +12,7 @@ set(base_SRCS
 add_library(base SHARED ${base_SRCS})
 target_include_directories(base
     PRIVATE
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBLOG_INCLUDES}
     PUBLIC
     ${REPO_PATH}/include

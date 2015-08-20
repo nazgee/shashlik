@@ -3,7 +3,7 @@ project(dexdump)
 set(REPO_PATH ${DALVIK_PATH})
 include_directories(${REPO_PATH}
                     ${LIBUTILS_INCLUDES}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     #${CMAKE_INSTALL_PREFIX}/include/android-libcore  # FIXME
                     ${CMAKE_INSTALL_PREFIX}/include/nativehelper     # FIXME
 )

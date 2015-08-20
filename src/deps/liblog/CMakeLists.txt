@@ -1,41 +1,39 @@
 project(log)
 
-set(REPO_PATH ${ANDROID_CORE_PATH})
+set(REPO_PATH ${ANDROID_CORE_PATH}/liblog)
+set(INC_PATH ${ANDROID_CORE_PATH}/include/log)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${LIBLOG_INCLUDES}
+include_directories(
+    ${INC_PATH}/../
 )
 
-add_definitions(-DFAKE_LOG_DEVICE=1)
-
-set(log_SRCS
-    ${REPO_PATH}/liblog/event_tag_map.c
-    ${REPO_PATH}/liblog/fake_log_device.c
-    ${REPO_PATH}/liblog/logd_write.c
-    #${REPO_PATH}/liblog/log_read.c
-    ${REPO_PATH}/liblog/logprint.c
-    ${REPO_PATH}/liblog/uio.c
+add_definitions(
+    -DFAKE_LOG_DEVICE=1
 )
 
-set(log_HEADERS
-    ${REPO_PATH}/include/log/event_tag_map.h
-    ${REPO_PATH}/include/log/logd.h
-    ${REPO_PATH}/include/log/logger.h
-    ${REPO_PATH}/include/log/log.h
-    ${REPO_PATH}/include/log/logprint.h
-    ${REPO_PATH}/include/log/uio.h
+set(SRC
+    ${REPO_PATH}/event_tag_map.c
+    ${REPO_PATH}/fake_log_device.c
+    ${REPO_PATH}/logd_write.c
+    #${REPO_PATH}/log_read.c
+    ${REPO_PATH}/logprint.c
+    ${REPO_PATH}/uio.c
 )
 
-add_library(${PROJECT_NAME} SHARED ${log_SRCS})
-if(FORCE_32BIT_BUILD)
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif(FORCE_32BIT_BUILD)
+set(INC
+    ${INC_PATH}/event_tag_map.h
+    ${INC_PATH}/logd.h
+    ${INC_PATH}/logger.h
+    ${INC_PATH}/log.h
+    ${INC_PATH}/logprint.h
+    ${INC_PATH}/uio.h
+)
+
+add_library(${PROJECT_NAME} SHARED ${SRC})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})
 #install(FILES
 #        ${log_HEADERS}
 #        DESTINATION include/log)
 
-add_executable(log_test tests/log_test.cpp)
-target_link_libraries(log_test log)
-
+add_subdirectory(tests)

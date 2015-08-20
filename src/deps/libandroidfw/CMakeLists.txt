@@ -29,7 +29,7 @@ target_include_directories(androidfw
     ${ANDROID_FRAMEWORKS_BASE}/include
     PRIVATE
     ${LIBUTILS_INCLUDES}
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBLOG_INCLUDES}
     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include
 )

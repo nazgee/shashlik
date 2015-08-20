@@ -23,7 +23,7 @@ target_include_directories(hardware_legacy
     PUBLIC
     ${REPO_PATH}/include
     ${LIBLOG_INCLUDES}
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
 )
 target_link_libraries(hardware_legacy
     cutils

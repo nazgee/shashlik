@@ -7,7 +7,7 @@ set(LIBENC_PATH ${MODULE_PATH}/compiler/codegen/x86/libenc)
 include_directories(${REPO_PATH}
                     ${MODULE_PATH}
                     ${LIBENC_PATH}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
                     ${LIBNATIVEHELPER_INCLUDEDIRS}
                     ${LIBANDROIDCORE_INCLUDEDIRS}

@@ -1,40 +1,45 @@
 project(backtrace)
 
-set(REPO_PATH ${ANDROID_CORE_PATH})
-set(MOD_PATH ${REPO_PATH}/libbacktrace)
-set(INC_PATH ${REPO_PATH}/include/backtrace)
+set(REPO_PATH ${ANDROID_CORE_PATH}/libbacktrace)
+set(INC_PATH ${ANDROID_CORE_PATH}/include/backtrace)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${LIBCORKSCREW_INCLUDES}
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+if(NOT UNWIND_FOUND)
+    find_package(Unwind REQUIRED)
+endif()
+
+include_directories(
+    ${LIBBACKTRACE_INCLUDE_DIR}
+    ${LIBUNWIND_INCLUDE_DIR}
 )
 
-add_definitions(-D_GNU_SOURCE
-                -DCORKSCREW_HAVE_ARCH
-                -std=gnu++11
+add_definitions(
+    -std=gnu++11
 )
 
 set(SRC
-   ${MOD_PATH}/BacktraceImpl.cpp
-   ${MOD_PATH}/BacktraceMap.cpp
-   ${MOD_PATH}/BacktraceThread.cpp
-   ${MOD_PATH}/thread_utils.c
-   ${MOD_PATH}/UnwindCurrent.cpp
-   ${MOD_PATH}/UnwindMap.cpp
-   ${MOD_PATH}/UnwindPtrace.cpp
+   ${REPO_PATH}/BacktraceImpl.cpp
+   ${REPO_PATH}/BacktraceMap.cpp
+   ${REPO_PATH}/BacktraceThread.cpp
+   ${REPO_PATH}/thread_utils.c
+   ${REPO_PATH}/UnwindCurrent.cpp
+   ${REPO_PATH}/UnwindMap.cpp
+   ${REPO_PATH}/UnwindPtrace.cpp
 )
 
-#set(HEADERS
-#   ${INC_PATH}/backtrace.h
-#   ${INC_PATH}/demangle.h
-#   ${INC_PATH}/map_info.h
-#   ${INC_PATH}/ptrace.h
-#   ${INC_PATH}/symbol_table.h
-#)
+set(INC
+   ${INC_PATH}/backtrace_constants.h
+   ${INC_PATH}/Backtrace.h
+   ${INC_PATH}/BacktraceMap.h
+)
 
-add_library(${PROJECT_NAME} SHARED ${SRC})
-#FIXME: add find_package into main CMakeLists.txt
+add_library(${PROJECT_NAME} SHARED ${SRC} ${INC})
+
 target_link_libraries(${PROJECT_NAME}
-    dl unwind unwind-ptrace log
+    ${LIBUNWIND_LIBRARY}
+    ${LIBUNWIND_PTRACE_LIBRARY}
+    ${LIBLOG_LIBRARY}
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})

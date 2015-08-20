@@ -1,89 +1,76 @@
 project(binder)
 
-set(REPO_PATH ${ANDROID_FRAMEWORKS_NATIVE_PATH})
-set(MODULE_PATH ${REPO_PATH}/libs/binder)
-set(INCLUDE_PATH ${REPO_PATH}/include/binder)
+set(REPO_PATH ${ANDROID_FRAMEWORKS_NATIVE_PATH}/libs/binder)
+set(INC_PATH ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include/binder)
+
 include_directories(
-                    ${CMAKE_CURRENT_SOURCE_DIR}
-#                    ${REPO_PATH}/include
-                    ${LIBBINDER_INCLUDE_DIR}
-                    ${LIBUTILS_INCLUDES}
-                    ${LIBCUTILS_INCLUDES}
-)
-#message("INC DIRS ARE ${LIBBINDER_INCLUDE_DIR}")
-
-add_definitions(-fpermissive                # for redeclaration of  char32_t
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${INC_PATH}/../
+    ${LIBUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
 )
 
-set(binder_LIB_SRCS
-    ${MODULE_PATH}/AppOpsManager.cpp
-    ${MODULE_PATH}/Binder.cpp
-    ${MODULE_PATH}/BpBinder.cpp
-    ${MODULE_PATH}/BufferedTextOutput.cpp
-    ${MODULE_PATH}/Debug.cpp
-    ${MODULE_PATH}/IAppOpsCallback.cpp
-    ${MODULE_PATH}/IAppOpsService.cpp
-    ${MODULE_PATH}/IInterface.cpp
-    ${MODULE_PATH}/IMemory.cpp
-    ${MODULE_PATH}/IPCThreadState.cpp
-    ${MODULE_PATH}/IPermissionController.cpp
-    ${MODULE_PATH}/IServiceManager.cpp
-    ${MODULE_PATH}/MemoryBase.cpp
-    ${MODULE_PATH}/MemoryDealer.cpp
-    ${MODULE_PATH}/MemoryHeapBase.cpp
-    ${MODULE_PATH}/Parcel.cpp
-    ${MODULE_PATH}/PermissionCache.cpp
-    ${MODULE_PATH}/ProcessState.cpp
-    ${MODULE_PATH}/Static.cpp
-    ${MODULE_PATH}/TextOutput.cpp
+add_definitions(
+    -fpermissive                # for redeclaration of  char32_t
 )
 
-set(binder_LIB_HEADERS
-    #    ${INCLUDE_PATH}/AppOpsManager.h
-    ${INCLUDE_PATH}/Binder.h
-    #    ${INCLUDE_PATH}/BinderService.h
-    ${INCLUDE_PATH}/BpBinder.h
-    ${INCLUDE_PATH}/BufferedTextOutput.h
-    ${INCLUDE_PATH}/Debug.h
-    #    ${INCLUDE_PATH}/IAppOpsCallback.h
-    #    ${INCLUDE_PATH}/IAppOpsService.h
-    ${INCLUDE_PATH}/IBinder.h
-    ${INCLUDE_PATH}/IInterface.h
-    #    ${INCLUDE_PATH}/IMemory.h
-    ${INCLUDE_PATH}/IPCThreadState.h
-    #    ${INCLUDE_PATH}/IPermissionController.h
-    #    ${INCLUDE_PATH}/IServiceManager.h
-    #    ${INCLUDE_PATH}/MemoryBase.h
-    #    ${INCLUDE_PATH}/MemoryDealer.h
-    #    ${INCLUDE_PATH}/MemoryHeapBase.h
-    ${INCLUDE_PATH}/Parcel.h
-    #    ${INCLUDE_PATH}/PermissionCache.h
-    ${INCLUDE_PATH}/ProcessState.h
-    ${INCLUDE_PATH}/TextOutput.h
-
-    #    ${REPO_PATH}/include/private/binder/binder_module.h
-    ${REPO_PATH}/include/private/binder/Static.h
+set(SRC
+    ${REPO_PATH}/AppOpsManager.cpp
+    ${REPO_PATH}/Binder.cpp
+    ${REPO_PATH}/BpBinder.cpp
+    ${REPO_PATH}/BufferedTextOutput.cpp
+    ${REPO_PATH}/Debug.cpp
+    ${REPO_PATH}/IAppOpsCallback.cpp
+    ${REPO_PATH}/IAppOpsService.cpp
+    ${REPO_PATH}/IInterface.cpp
+    ${REPO_PATH}/IMemory.cpp
+    ${REPO_PATH}/IPCThreadState.cpp
+    ${REPO_PATH}/IPermissionController.cpp
+    ${REPO_PATH}/IServiceManager.cpp
+    ${REPO_PATH}/MemoryBase.cpp
+    ${REPO_PATH}/MemoryDealer.cpp
+    ${REPO_PATH}/MemoryHeapBase.cpp
+    ${REPO_PATH}/Parcel.cpp
+    ${REPO_PATH}/PermissionCache.cpp
+    ${REPO_PATH}/ProcessState.cpp
+    ${REPO_PATH}/Static.cpp
+    ${REPO_PATH}/TextOutput.cpp
 )
 
-link_directories(${CMAKE_INSTALL_PREFIX}/lib/
-                 #${CMAKE_CURRENT_BINARY_DIR}/libdex/  # For linking dexdump, dexlist and dexgen
-                 )
+set(INC
+    #    ${INC_PATH}/AppOpsManager.h
+    ${INC_PATH}/Binder.h
+    #    ${INC_PATH}/BinderService.h
+    ${INC_PATH}/BpBinder.h
+    ${INC_PATH}/BufferedTextOutput.h
+    ${INC_PATH}/Debug.h
+    #    ${INC_PATH}/IAppOpsCallback.h
+    #    ${INC_PATH}/IAppOpsService.h
+    ${INC_PATH}/IBinder.h
+    ${INC_PATH}/IInterface.h
+    #    ${INC_PATH}/IMemory.h
+    ${INC_PATH}/IPCThreadState.h
+    #    ${INC_PATH}/IPermissionController.h
+    #    ${INC_PATH}/IServiceManager.h
+    #    ${INC_PATH}/MemoryBase.h
+    #    ${INC_PATH}/MemoryDealer.h
+    #    ${INC_PATH}/MemoryHeapBase.h
+    ${INC_PATH}/Parcel.h
+    #    ${INC_PATH}/PermissionCache.h
+    ${INC_PATH}/ProcessState.h
+    ${INC_PATH}/TextOutput.h
+)
 
-add_library(${PROJECT_NAME} SHARED ${binder_LIB_SRCS})
-if(FORCE_32BIT_BUILD)
-    set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} -m32" LINK_FLAGS "${LINK_FLAGS} -m32")
-endif(FORCE_32BIT_BUILD)
+add_library(${PROJECT_NAME} SHARED ${SRC} ${INC})
 
-#target_compile_definitions(${PROJECT_NAME}
-#    PUBLIC
-#    -DHAVE_ANDROID_OS
-#)
-target_link_libraries(${PROJECT_NAME} utils cutils)
+target_link_libraries(${PROJECT_NAME}
+    ${LIBUTILS_LIBRARY}
+    ${LIBCUTILS_LIBRARY}
+)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})
 install(FILES
-        ${binder_LIB_HEADERS}
+        ${INC}
         DESTINATION include/binder)
 
 add_subdirectory(tests)
-

@@ -1,23 +1,27 @@
 project(ziparchive)
 
 set(REPO_PATH ${ANDROID_CORE_PATH}/libziparchive)
+set(INC_PATH ${ANDROID_CORE_PATH}/include/ziparchive)
 
-set(ziparchive_SRCS
+if(NOT ZLIB_FOUND)
+    find_package(ZLIB REQUIRED)
+endif()
+
+include_directories(
+    ${INC_PATH}/../
+    ${LIBLOG_INCLUDE_DIR}
+    ${LIBNATIVEHELPER_INCLUDE_DIR}
+)
+
+set(SRC
     ${REPO_PATH}/zip_archive.cc
 )
 
-add_library(ziparchive SHARED ${ziparchive_SRCS})
-target_include_directories(ziparchive
-    PRIVATE
-    ${LIBLOG_INCLUDES}
-    ${LIBNATIVEHELPER_INCLUDE_DIR}
+add_library(${PROJECT_NAME} SHARED ${SRC})
+
+target_link_libraries(${PROJECT_NAME}
+    ${ZLIB_LIBRARY}
+    ${LIBUTILS_LIBRARY}
 )
-target_link_libraries(ziparchive
-    z
-    utils
-)
-#set_target_properties(ziparchive PROPERTIES COMPILE_FLAGS "-std=c++11")
-if(FORCE_32BIT_BUILD)
-    set_target_properties(ziparchive PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif(FORCE_32BIT_BUILD)
-install(TARGETS ziparchive DESTINATION ${ANDROID_LIB_DIR})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})

@@ -32,7 +32,7 @@ target_link_libraries(installer
 target_include_directories(installer
     PRIVATE
 #     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBLOG_INCLUDES}
     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include
     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/cmds/installd
@@ -62,7 +62,7 @@ target_link_libraries(installd
 target_include_directories(installd
     PRIVATE
 #     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBLOG_INCLUDES}
     ${ANDROID_FRAMEWORKS_NATIVE_PATH}/include
     ${ANDROID_CORE_PATH}/include

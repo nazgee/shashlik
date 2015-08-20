@@ -963,7 +963,7 @@ include_directories(
     ${BIONIC_LIBC_SRC_DIR}/upstream-freebsd
     ${BIONIC_LIBC_SRC_DIR}/upstream-netbsd
     ${GENERAL_SOURCE_PATH}/bionic/libm/include
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${SAFE_IOP_INCLUDES})
 
 add_library(bionic_libc SHARED ${libc_SRCS})

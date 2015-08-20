@@ -3,7 +3,7 @@ find_package(KF5DBusAddons NO_MODULE)
 find_package(Qt5Network ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 include_directories(${CMAKE_INSTALL_PREFIX}/include 
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
 )
 
 set(kded_shashlik_propertiesd_SRCS

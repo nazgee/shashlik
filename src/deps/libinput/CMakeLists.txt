@@ -29,7 +29,7 @@ target_include_directories(input
     PRIVATE
     ${LIBBINDER_INCLUDES}
     ${LIBUTILS_INCLUDES}
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
 )
 target_compile_definitions(input
     PRIVATE

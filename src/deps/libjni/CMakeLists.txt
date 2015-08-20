@@ -32,7 +32,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${SQLITE3_INCLUDES}
                     ${SKIA_INCLUDES}
                     ${SKIA_PATH}/include ${SKIA_PATH}/src/core ${SKIA_PATH}/src/images
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${LIBNATIVEHELPER_INCLUDEDIRS}
                     ${LIBBINDER_INCLUDES}
                     ${ANDROID_FRAMEWORKS_BASE}/include

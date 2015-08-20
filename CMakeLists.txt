@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-
 # General definitions
 set(SHASHLIK_VERSION_STRING "0.5.0")
 set(SHASHLIK_VERSION_MAJOR 0)
@@ -144,10 +143,14 @@ set(SKIA_PATH                      ${GENERAL_SOURCE_PATH}/android-skia)
 # Tier 1 libraries
 
 # android-core (FIXME: Make one ANDROID_CORE_INCLUDES instead?)
-set(LIBCORKSCREW_INCLUDES  ${ANDROID_CORE_PATH}/include)
-set(LIBLOG_INCLUDES        ${ANDROID_CORE_PATH}/include)
-set(LIBUTILS_INCLUDES      ${ANDROID_CORE_PATH}/include)
-set(LIBCUTILS_INCLUDES     ${ANDROID_CORE_PATH}/include)
+set(LIBBACKTRACE_INCLUDE_DIR    ${ANDROID_CORE_PATH}/include)
+set(LIBBACKTRACE_LIBRARY        backtrace)
+set(LIBLOG_INCLUDE_DIR          ${ANDROID_CORE_PATH}/include)
+set(LIBLOG_LIBRARY              log)
+set(LIBUTILS_INCLUDE_DIR        ${ANDROID_CORE_PATH}/include)
+set(LIBUTILS_LIBRARY            utils)
+set(LIBCUTILS_INCLUDE_DIR       ${ANDROID_CORE_PATH}/include)
+set(LIBCUTILS_LIBRARY           cutils)
 
 set(LIBANDROIDCORE_INCLUDEDIRS ${ANDROID_CORE_PATH}/include)
 set(LIBANDROIDLIBCORE_INCLUDEDIRS ${ANDROID_LIBCORE_PATH}/include)

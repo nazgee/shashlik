@@ -3,11 +3,13 @@ project(binder_demo)
 set(SERVER dk_server)
 set(CLIENT dk_client)
 
-add_definitions(-std=gnu++11)
-
 include_directories(SYSTEM
     ${LIBBINDER_INCLUDE_DIR}
     ${LIBUTILS_INCLUDE_DIR}
+)
+
+add_definitions(
+    -std=gnu++11
 )
 
 # Server

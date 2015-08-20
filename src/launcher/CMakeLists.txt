@@ -13,7 +13,7 @@ add_definitions(-fPIC
 # FIXME: Introduce ${<library>_INCLUDES} variables for all our libraries.
 include_directories(${LIBBINDER_INCLUDES}
                     ${LIBUTILS_INCLUDES}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${LIBNATIVEHELPER_INCLUDEDIRS}
                     ${SKIA_INCLUDES}
                     ${CMAKE_INSTALL_PREFIX}/include

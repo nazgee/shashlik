@@ -136,7 +136,7 @@ target_link_libraries(surfaceflinger
 )
 target_include_directories(surfaceflinger
     PRIVATE
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBBINDER_INCLUDES}
     ${LIBHARDWARE_INCLUDES}
 #     ${QT5GUI32_INCLUDE_DIRS}

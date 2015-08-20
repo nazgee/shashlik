@@ -70,7 +70,7 @@ include_directories(
                     ${OPENSSL_INCLUDE_DIR}
                     ${ICU_INCLUDE_DIRS}
                     ${LIBANDROIDLIBCORE_INCLUDEDIRS}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${LIBNATIVEHELPER_INCLUDEDIRS}
                     ${ANDROID_FRAMEWORKS_BASE}/include
                     ${DALVIK_PATH}/vm

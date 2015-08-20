@@ -4,7 +4,7 @@ set(REPO_PATH ${DALVIK_PATH})
 set(MODULE_PATH ${REPO_PATH}/tools/hprof-conv)
 include_directories(${REPO_PATH}
                     ${LIBUTILS_INCLUDES}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
                     ${CMAKE_INSTALL_PREFIX}/include/nativehelper    #FIXME
 )

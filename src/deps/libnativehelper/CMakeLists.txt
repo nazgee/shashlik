@@ -1,42 +1,47 @@
 project(nativehelper)
 
-#add_definitions(-DHAVE_SYS_UIO_H)
-add_definitions(-fpermissive) # To allow cast from char* to int
+set(REPO_PATH ${NATIVEHELPER_PATH})
+set(INC_PATH ${NATIVEHELPER_PATH}/include/nativehelper)
 
-set(nativehelper_SRCS
-   ${NATIVEHELPER_PATH}/JniConstants.cpp
-   ${NATIVEHELPER_PATH}/JNIHelp.cpp
-   ${NATIVEHELPER_PATH}/JniInvocation.cpp
-   ${NATIVEHELPER_PATH}/toStringArray.cpp
+include_directories(
+    ${INC_PATH}
+    ${LIBLOG_INCLUDE_DIR}
+    ${LIBCUTILS_INCLUDE_DIR}
 )
 
-set(nativehelper_HEADERS
-   ${LIBNATIVEHELPER_INCLUDES}/JniConstants.h
-   ${LIBNATIVEHELPER_INCLUDES}/jni.h
-   ${LIBNATIVEHELPER_INCLUDES}/JNIHelp.h
-   ${LIBNATIVEHELPER_INCLUDES}/JniInvocation.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedBytes.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedFd.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedLocalFrame.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedLocalRef.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedPrimitiveArray.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedStringChars.h
-   ${LIBNATIVEHELPER_INCLUDES}/ScopedUtfChars.h
-   ${LIBNATIVEHELPER_INCLUDES}/toStringArray.h
-   ${LIBNATIVEHELPER_INCLUDES}/UniquePtr.h
+add_definitions(
+    -fpermissive # To allow cast from char* to int
 )
 
-include_directories(${LIBNATIVEHELPER_INCLUDE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../android-core/include) # for android/log.h
-include_directories(SYSTEM ${CMAKE_INSTALL_PREFIX}/include)
+set(SRC
+   ${REPO_PATH}/JniConstants.cpp
+   ${REPO_PATH}/JNIHelp.cpp
+   ${REPO_PATH}/JniInvocation.cpp
+   ${REPO_PATH}/toStringArray.cpp
+)
 
-add_library(nativehelper SHARED ${nativehelper_SRCS})
-if(FORCE_32BIT_BUILD)
-    set_target_properties(nativehelper PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif(FORCE_32BIT_BUILD)
-target_link_libraries(nativehelper dl log)
+set(INC
+   ${INC_PATH}/JniConstants.h
+   ${INC_PATH}/jni.h
+   ${INC_PATH}/JNIHelp.h
+   ${INC_PATH}/JniInvocation.h
+   ${INC_PATH}/ScopedBytes.h
+   ${INC_PATH}/ScopedFd.h
+   ${INC_PATH}/ScopedLocalFrame.h
+   ${INC_PATH}/ScopedLocalRef.h
+   ${INC_PATH}/ScopedPrimitiveArray.h
+   ${INC_PATH}/ScopedStringChars.h
+   ${INC_PATH}/ScopedUtfChars.h
+   ${INC_PATH}/toStringArray.h
+   ${INC_PATH}/UniquePtr.h
+)
 
-install(TARGETS nativehelper DESTINATION ${ANDROID_LIB_DIR})
-install(FILES
-        ${nativehelper_HEADERS}
+add_library(${PROJECT_NAME} SHARED ${SRC})
+
+target_link_libraries(${PROJECT_NAME}
+    ${LIBLOG_LIBRARY}
+)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_LIB_DIR})
+install(FILES ${INC}
         DESTINATION ${CMAKE_INSTALL_PREFIX}/include/nativehelper)

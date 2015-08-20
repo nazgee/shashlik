@@ -134,7 +134,7 @@ include_directories(
     ${LIBNATIVEHELPER_INCLUDEDIRS}
     ${LIBANDROIDLIBCORE_INCLUDEDIRS}
     ${ANDROID_LIBCORE_PATH}/luni/src/main/native
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${GENERAL_SOURCE_PATH}/openssl/include
 )
 add_definitions(-Wall -Wextra -Werror)

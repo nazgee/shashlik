@@ -13,7 +13,7 @@ set(sqlite_SRCS
 )
 
 include_directories(
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${REPO_PATH}/dist
 )
 

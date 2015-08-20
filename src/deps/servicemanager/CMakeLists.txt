@@ -2,23 +2,25 @@ project(servicemanager)
 
 set(REPO_PATH ${ANDROID_FRAMEWORKS_NATIVE_PATH}/cmds/servicemanager)
 
-set(servicemanager_SRCS
+#FXIME: add selinux
+#find_package(selinux REQUIRED)
+
+include_directories(
+    ${LIBLOG_INCLUDE_DIR}
+    ${LIBBINDER_INCLUDE_DIR}
+)
+
+set(SRC
     ${REPO_PATH}/service_manager.cpp
     ${REPO_PATH}/binder.cpp
 )
 
-set_source_files_properties(serviceManager_SRCS PROPERTIES LANGUAGE CXX )
+set_source_files_properties(SRC PROPERTIES LANGUAGE CXX)
 
-add_executable(servicemanager ${servicemanager_SRCS})
-if(FORCE_32BIT_BUILD)
-    set_target_properties(servicemanager PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif(FORCE_32BIT_BUILD)
+add_executable(${PROJECT_NAME} ${SRC})
 
-target_include_directories(servicemanager
-    PRIVATE
-    ${LIBLOG_INCLUDES}
-    ${LIBBINDER_INCLUDE_DIR}
-)
-target_link_libraries(servicemanager log selinux)
+target_link_libraries(${PROJECT_NAME}
+    ${LIBLOG_LIBRARY}
+    selinux)
 
-install(TARGETS servicemanager DESTINATION ${ANDROID_BIN_DIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${ANDROID_BIN_DIR})

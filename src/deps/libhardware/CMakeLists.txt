@@ -74,7 +74,7 @@ set(hwcomposer_SRCS
 
 include_directories(
                     ${REPO_PATH}/include
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
                     ${LIBLOG_INCLUDES}
 )
 

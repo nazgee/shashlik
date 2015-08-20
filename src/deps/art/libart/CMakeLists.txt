@@ -7,7 +7,7 @@ set(REPO_PATH ${ART_PATH}/runtime)
 include_directories(${REPO_PATH}
 #                    ${MODULE_PATH}
 #                    ${LIBENC_PATH}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
 #                    ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
                     ${LIBNATIVEHELPER_INCLUDE_DIR}
 #                    ${LIBANDROIDCORE_INCLUDEDIRS}
@@ -355,7 +355,7 @@ add_definitions(-DART_DEFAULT_GC_TYPE_IS_CMS
 include_directories(${REPO_PATH}
 #                    ${MODULE_PATH}
 #                    ${LIBENC_PATH}
-                    ${LIBCUTILS_INCLUDES}
+                    ${LIBCUTILS_INCLUDE_DIR}
 #                    ${CMAKE_INSTALL_PREFIX}/include/android-libcore #FIXME
                     ${LIBNATIVEHELPER_INCLUDEDIRS}
 #                    ${LIBANDROIDCORE_INCLUDEDIRS}

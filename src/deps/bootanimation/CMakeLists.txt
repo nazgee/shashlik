@@ -37,7 +37,7 @@ target_link_libraries(bootanimation
 )
 target_include_directories(bootanimation
     PRIVATE
-    ${LIBCUTILS_INCLUDES}
+    ${LIBCUTILS_INCLUDE_DIR}
     ${LIBLOG_INCLUDES}
     ${LIBANDROIDCORE_INCLUDEDIRS}
     ${LIBANDROIDLIBCORE_INCLUDEDIRS}
